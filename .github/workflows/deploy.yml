@@ -14,7 +14,10 @@ jobs:
       - name: Ensure Minikube is running
         shell: powershell
         run: |
-          minikube status || minikube start --driver=docker
+          $status = minikube status --format='{{.Host}}' 2>$null
+          if ($status -ne 'Running') {
+            minikube start --driver=docker
+          }
 
       - name: Use Minikube Docker
         shell: powershell
