@@ -44,7 +44,7 @@ spec:
     - host: api.local
       http:
         paths:
-          - path: /api1(/|$)(.*)
+          - path: /api1
             pathType: Prefix
             backend:
               service:
@@ -52,7 +52,7 @@ spec:
                 port:
                   number: 3000
 
-          - path: /api2(/|$)(.*)
+          - path: /api2
             pathType: Prefix
             backend:
               service:
