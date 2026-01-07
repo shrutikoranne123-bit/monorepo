@@ -11,20 +11,30 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Use Minikube Docker
-        run: eval $(minikube docker-env)
+      - name: Ensure Minikube is running
+        shell: powershell
+        run: |
+          minikube status || minikube start --driver=docker
 
+      - name: Use Minikube Docker
+        shell: powershell
+        run: |
+          minikube -p minikube docker-env --shell powershell | Invoke-Expression
 
       - name: Build backend images
+        shell: powershell
         run: |
           docker build -t backend-api-1 -f docker/backend.Dockerfile apps/backend-api-1
           docker build -t backend-api-2 -f docker/backend.Dockerfile apps/backend-api-2
 
       - name: Build frontend images
+        shell: powershell
         run: |
           docker build -t frontend-app-1 -f docker/frontend.Dockerfile apps/frontend-app-1
           docker build -t frontend-app-2 -f docker/frontend.Dockerfile apps/frontend-app-2
           docker build -t frontend-app-3 -f docker/frontend.Dockerfile apps/frontend-app-3
 
       - name: Deploy to Kubernetes
-        run: kubectl apply -f k8s/
+        shell: powershell
+        run: |
+          kubectl apply -f k8s/
