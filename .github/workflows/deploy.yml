@@ -12,7 +12,8 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Use Minikube Docker
-        run: eval $(minikube docker-env)
+        run: minikube -p minikube docker-env --shell powershell | Invoke-Expression
+
 
       - name: Build backend images
         run: |
