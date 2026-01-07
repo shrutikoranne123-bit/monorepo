@@ -1,0 +1,29 @@
+name: CI-CD
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Minikube Docker
+        run: eval $(minikube docker-env)
+
+      - name: Build backend images
+        run: |
+          docker build -t backend-api-1 -f docker/backend.Dockerfile apps/backend-api-1
+          docker build -t backend-api-2 -f docker/backend.Dockerfile apps/backend-api-2
+
+      - name: Build frontend images
+        run: |
+          docker build -t frontend-app-1 -f docker/frontend.Dockerfile apps/frontend-app-1
+          docker build -t frontend-app-2 -f docker/frontend.Dockerfile apps/frontend-app-2
+          docker build -t frontend-app-3 -f docker/frontend.Dockerfile apps/frontend-app-3
+
+      - name: Deploy to Kubernetes
+        run: kubectl apply -f k8s/

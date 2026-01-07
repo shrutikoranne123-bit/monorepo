@@ -1,0 +1,61 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    # -------- Frontend apps --------
+    - host: frontend1.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-app-1
+                port:
+                  number: 80
+
+    - host: frontend2.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-app-2
+                port:
+                  number: 80
+
+    - host: frontend3.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: frontend-app-3
+                port:
+                  number: 80
+
+    # -------- Backend APIs --------
+    - host: api.local
+      http:
+        paths:
+          - path: /api1(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-api-1
+                port:
+                  number: 3000
+
+          - path: /api2(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: backend-api-2
+                port:
+                  number: 3000

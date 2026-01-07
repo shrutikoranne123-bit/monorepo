@@ -1,0 +1,7 @@
+{
+  "name": "frontend-app-3",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "mkdir -p dist && echo '<h1>Frontend App 3</h1>' > dist/index.html"
+  }
+}
