@@ -48,8 +48,8 @@ jobs:
 
     - name: Configure kubeconfig
       run: |
-        mkdir -p ~/.kube
-        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+        New-Item -ItemType Directory -Force -Path $HOME\.kube
+        Set-Content -Path $HOME\.kube\config -Value "${{ secrets.KUBECONFIG }}"
 
     - name: Deploy to Kubernetes
       run: |
