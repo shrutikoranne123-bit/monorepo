@@ -38,12 +38,7 @@ jobs:
     - name: Deploy Kubernetes manifests
       shell: powershell
       run: |
-        kubectl apply -f k8s/namespace.yaml
-        kubectl apply -f k8s/backend-api-1
-        kubectl apply -f k8s/backend-api-2
-        kubectl apply -f k8s/frontend-app-1
-        kubectl apply -f k8s/frontend-app-2
-        kubectl apply -f k8s/frontend-app-3
+        kubectl apply -f k8s
 
     - name: Restart deployments to pick up new images
       shell: powershell
