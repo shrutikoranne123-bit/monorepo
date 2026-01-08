@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - name: Checkout
@@ -43,3 +43,16 @@ jobs:
         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/app3:latest frontend/app3
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/app3:latest
 
+    - name: Set up kubectl
+      uses: azure/setup-kubectl@v3
+
+    - name: Configure kubeconfig
+      run: |
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+
+    - name: Deploy to Kubernetes
+      run: |
+        kubectl apply -f k8s/backend
+        kubectl apply -f k8s/frontend
+        
