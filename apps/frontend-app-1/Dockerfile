@@ -1,12 +1,9 @@
-# build stage
-FROM node:18-alpine AS build
-WORKDIR /app
-COPY package.json .
-RUN npm install
-COPY . .
-RUN npm run build
-
-# runtime stage
 FROM nginx:alpine
-COPY --from=build /app/dist /usr/share/nginx/html
+
+# Remove default nginx html
+RUN rm -rf /usr/share/nginx/html/*
+
+# Copy static files
+COPY . /usr/share/nginx/html
+
 EXPOSE 80

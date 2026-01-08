@@ -1,31 +1,40 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-app-2
+  name: frontend-app1
+  namespace: monorepo-app
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: frontend-app-2
+      app: frontend-app1
   template:
     metadata:
       labels:
-        app: frontend-app-2
+        app: frontend-app1
     spec:
       containers:
-        - name: frontend-app-2
-          image: frontend-app-2:latest
-          imagePullPolicy: Never
-          ports:
-            - containerPort: 80
+      - name: frontend-app1
+        image: frontend-app1:latest
+        imagePullPolicy: Never
+        env:
+        - name: API1_URL
+          value: "http://backend-api1:5000"
+        - name: API2_URL
+          value: "http://backend-api2:5000"
+        ports:
+        - containerPort: 80
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: frontend-app-2
+  name: frontend-app1
+  namespace: monorepo-app
 spec:
+  type: NodePort
   selector:
-    app: frontend-app-2
+    app: frontend-app1
   ports:
-    - port: 80
-      targetPort: 80
+  - port: 80
+    targetPort: 80
+    nodePort: 30300
