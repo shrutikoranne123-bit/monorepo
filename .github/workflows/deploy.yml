@@ -43,7 +43,3 @@ jobs:
         docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/app3:latest frontend/app3
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/app3:latest
 
-    - name: Deploy to Kubernetes
-      run: |
-        kubectl apply -R -f k8s/backend
-        kubectl apply -R -f k8s/frontend
